@@ -6,24 +6,32 @@ import math
 
 class Monitor():
     def __init__(self, **kwargs):
+        # Sets the traffic threshold, if specified
         if "high_traffic_threshold" in kwargs:
             self._high_traffic = kwargs["high_traffic_threshold"]
         else:
             self._high_traffic = 100
 
+        # Sets the queue processing frequency
         self._refresh_freq = 500
         self._update_timedelta = timedelta(milliseconds=self._refresh_freq)
 
+        # Sets the number of top sites to show
         self._num_top_sites = 10
 
+        # Sets the number of seconds to monitor critical time (i.e. 2 mins in this case)
         self._critical_monitor_time = 120
+
+        # Initializes hits / hits in 2 min
         self._hits = 0
         self._hits_2_min = 0
 
+        # Initializes initial elapsed times
         self._elapsed = timedelta(0)
         self._time_critical = timedelta(0)
         self._time_healthy = timedelta(0)
 
+        # Creates alert queue for a two minute period
         self._alert_queue = [0] * self._critical_monitor_time * math.floor((1000 / self._refresh_freq))
         self._site_queue = []
         self._history = {}
@@ -36,14 +44,17 @@ class Monitor():
         # Critical and Recovered Alerts
         self._alerts = [0, 0]
 
+    # This method adds urls to the processing queue (the sniffer invokes this method)
     def add(self, host, path):
         trim_path = path.split("/")[1].split("?")[0]
         site = "{}/{}".format(host, trim_path)
         self._site_queue.append(site)
 
+    # This method starts the measurement interval
     def start(self):
         self._alert_interval()
         self._top_sites_interval()
+
 
     def _alert_interval(self):
         def wrapper():
@@ -69,6 +80,7 @@ class Monitor():
         self._hits += hits
         self._logger.update_hits(self._hits)
 
+    # This method is responsible for processing the queued HTTP packets
     def _process_queue(self):
         self._update_time()
         hits = len(self._site_queue)

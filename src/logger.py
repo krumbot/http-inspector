@@ -2,7 +2,7 @@ import curses
 import atexit
 from datetime import datetime
 
-
+# This class is responsible for terminal output
 class Logger():
     def __init__(self, *args, **kwargs):
         self._stdscr = curses.initscr()

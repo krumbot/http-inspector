@@ -1,7 +1,6 @@
 import argparse
 from sniff import Sniffer
 
-
 def main(**kwargs):
     sniffer = Sniffer(**kwargs)
     sniffer.start()

@@ -25,36 +25,28 @@ def test_hits_added_monitor_is_valid(hits_added_monitor):
     simulate_time(hits_added_monitor, 5000)
     assert hits_added_monitor._hits == hits_added_default
 
-
 def test_initial_hits(empty_monitor):
     assert empty_monitor._hits == 0
-
 
 def test_initial_elapsed(empty_monitor):
     assert empty_monitor._elapsed == timedelta(0)
 
-
 def test_initial_critical_time_elapsed(empty_monitor):
     assert empty_monitor._time_critical == timedelta(0)
 
-
 def test_initial_healthy_time_elapsed(empty_monitor):
     assert empty_monitor._time_healthy == timedelta(0)
-
 
 def test_simumlate_time(empty_monitor):
     time_to_sim = 5000
     simulate_time(empty_monitor, time_to_sim)
     assert empty_monitor._elapsed == timedelta(milliseconds=time_to_sim)
 
-
 def test_initial_hits_2_min(empty_monitor):
     assert empty_monitor._hits_2_min == 0
 
-
 def test_initial_status(empty_monitor):
     assert empty_monitor._status == "Healthy"
-
 
 def test_add_hits(empty_monitor):
     hits_to_add = 50
@@ -62,30 +54,25 @@ def test_add_hits(empty_monitor):
     simulate_time(empty_monitor, 5000)
     assert empty_monitor._hits == hits_to_add
 
-
 def test_add_hits_2_min(empty_monitor):
     hits_to_add_2_min = 100
     add_hits(empty_monitor, hits_to_add_2_min)
     simulate_time(empty_monitor, 5000)
     assert empty_monitor._hits_2_min == hits_to_add_2_min
 
-
 def test_flush_hits_2_min(hits_added_monitor):
     # Sim 2.5 Mins
     simulate_time(hits_added_monitor, 150000)
     assert hits_added_monitor._hits_2_min == 0
 
-
 def test_critical_status(hits_added_monitor):
     simulate_time(hits_added_monitor, 5000)
     assert hits_added_monitor._status == "Critical"
-
 
 def test_healthy_status(empty_monitor):
     add_hits(empty_monitor, 1)
     simulate_time(empty_monitor, 100)
     assert empty_monitor._status == "Healthy"
-
 
 def test_status_recovery(hits_added_monitor):
     simulate_time(hits_added_monitor, 150000)
@@ -112,7 +99,6 @@ def test_multiple_alert_recovery(empty_monitor):
         simulate_time(empty_monitor, sim_time)
         assert empty_monitor._status == expected_status
 
-
 def test_multiple_alert_healthy_time(empty_monitor):
     sim_time_1 = 60000
     sim_time_2 = 5000
@@ -123,7 +109,6 @@ def test_multiple_alert_healthy_time(empty_monitor):
     simulate_time(empty_monitor, sim_time_1)
     expected_time = sim_time_1 + sim_time_2
     assert empty_monitor._time_healthy == timedelta(milliseconds=expected_time)
-
 
 def test_multiple_alert_critical_time(empty_monitor):
     sim_time_1 = 60000
@@ -136,8 +121,6 @@ def test_multiple_alert_critical_time(empty_monitor):
     expected_time = 2 * sim_time_1
     assert empty_monitor._time_critical == timedelta(milliseconds=expected_time)
 
-
-
 # ------------Test Helpers---------------- #
 def simulate_time(monitor, sim_time):
     intervals = int(sim_time / monitor._refresh_freq)
@@ -149,7 +132,6 @@ def add_hits(monitor, hits):
     args = ("host.com", "/site/subsite")
     for i in range(0, hits):
         monitor.add(*args)
-
 
 def get_action_stream():
     return (

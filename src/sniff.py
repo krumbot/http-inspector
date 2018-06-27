@@ -8,10 +8,12 @@ class Sniffer:
     def __init__(self, **kwargs):
         self._monitor = Monitor(**kwargs)
 
+    # Start the monitor and the sniffer
     def start(self):
         self._monitor.start()
         sniff(filter="tcp and port 80", prn=self._read_packet)
 
+    # Create a new thread to process each packet
     def _read_packet(self, packet):
         if packet.haslayer(http.HTTPRequest):
             layer = packet.getlayer(http.HTTPRequest)
