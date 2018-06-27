@@ -69,8 +69,14 @@ class Logger():
         self._stdscr.refresh()
         self._alerts_bottom += 1
 
+    def _format_time(self, elapsed):
+        elapsed_str = str(elapsed)[:10]
+        if len(elapsed_str) <= 8:
+            elapsed_str += ".00"
+        return elapsed_str
+
     def update_timer(self, elapsed, healthy, critical):
-        elapsed_str = str(elapsed)[0:10]
+        elapsed_str = self._format_time(elapsed)
         start = self._width - len(elapsed_str)
         self._stdscr.addstr(2, start, elapsed_str)
         self._stdscr.refresh()
@@ -79,13 +85,13 @@ class Logger():
         self._update_time_critical(critical)
 
     def _update_time_healthy(self, elapsed):
-        time = str(elapsed)[:10]
+        time = self._format_time(elapsed)
         start = self._width - len(time)
         self._stdscr.addstr(3, start, time)
         self._stdscr.refresh()
 
     def _update_time_critical(self, elapsed):
-        time = str(elapsed)[:10]
+        time = self._format_time(elapsed)
         start = self._width - len(time)
         self._stdscr.addstr(4, start, time)
         self._stdscr.refresh()
