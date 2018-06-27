@@ -1,0 +1,12 @@
+atomicwrites==1.1.5
+attrs==18.1.0
+freezegun==0.3.10
+more-itertools==4.2.0
+pbr==4.0.4
+pluggy==0.6.0
+py==1.5.3
+pytest==3.6.2
+python-dateutil==2.7.3
+scapy==2.4.0
+scapy-http==1.8
+six==1.11.0
