@@ -12,6 +12,7 @@ class Monitor():
             self._high_traffic = 100
 
         self._refresh_freq = 500
+        self._update_timedelta = timedelta(milliseconds=self._refresh_freq)
 
         self._num_top_sites = 10
 
@@ -41,7 +42,6 @@ class Monitor():
         self._site_queue.append(site)
 
     def start(self):
-        self._start_time = datetime.now()
         self._alert_interval()
         self._top_sites_interval()
 
@@ -79,17 +79,15 @@ class Monitor():
         self._update_alert_status()
 
     def _update_time(self):
-        elapsed = datetime.now() - self._start_time
-        change = elapsed - self._elapsed
-        self._update_status_times(change)
-        self._elapsed = elapsed
+        self._elapsed += self._update_timedelta
+        self._update_status_times()
         self._logger.update_timer(self._elapsed, self._time_healthy, self._time_critical)
 
-    def _update_status_times(self, change):
+    def _update_status_times(self):
         if self._status == "Healthy":
-            self._time_healthy += change
+            self._time_healthy += self._update_timedelta
         else:
-            self._time_critical += change
+            self._time_critical += self._update_timedelta
 
     def _update_sites(self):
         for site in self._site_queue:

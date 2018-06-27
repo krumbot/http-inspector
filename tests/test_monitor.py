@@ -8,10 +8,7 @@ from monitor import Monitor
 
 @pytest.fixture
 def empty_monitor():
-    monitor_ins = Monitor(**kwargs)
-    monitor_ins._logger = DummyLogger()
-    monitor_ins._start_time = datetime.now()
-    return monitor_ins
+    return DummyMonitor(**kwargs)
 
 
 @pytest.fixture
@@ -113,6 +110,12 @@ hits_added_default = 10000
 
 critical_threshold = 10
 kwargs = {"high_traffic_threshold": critical_threshold, "__test__": True}
+
+
+class DummyMonitor(Monitor):
+    def __init__(self, **kwargs):
+        Monitor.__init__(self, **kwargs)
+        self._logger = DummyLogger()
 
 
 class DummyLogger():
