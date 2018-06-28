@@ -32,7 +32,7 @@ class Monitor():
         self._time_healthy = timedelta(0)
 
         # Creates alert queue for a two minute period
-        self._alert_queue = [0] * self._critical_monitor_time * math.floor((1000 / self._refresh_freq))
+        self._alert_queue = [0] * int(self._critical_monitor_time * math.floor((1000 / self._refresh_freq)))
         self._site_queue = []
         self._history = {}
         self._status = "Healthy"
